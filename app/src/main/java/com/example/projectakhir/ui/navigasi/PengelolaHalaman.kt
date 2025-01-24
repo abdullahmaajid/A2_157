@@ -22,8 +22,12 @@ import com.example.projectakhir.ui.navigasi.DestinasiMainScreen
 //import com.example.projectakhir.ui.MainScreen
 //import com.example.projectakhir.ui.buku.view.HomeViewBuku
 import com.example.projectakhir.ui.kategori.viewmodel.HomeViewModelKategori
+import com.example.projectakhir.ui.penerbit.view.DestinasiDetailPenerbit
+import com.example.projectakhir.ui.penerbit.view.DetailViewPenerbit
 import com.example.projectakhir.ui.penerbit.view.HomeViewPenerbit
 import com.example.projectakhir.ui.penerbit.view.InsertViewPenerbit
+import com.example.projectakhir.ui.penerbit.view.UpdateViewPenerbit
+import com.example.projectakhir.ui.penulis.view.DetailViewPenulis
 import com.example.projectakhir.ui.penulis.view.HomeViewPenulis
 
 @Composable
@@ -91,7 +95,7 @@ fun PengelolaHalaman(
                     }
                 })
             }
-            // DELETE KATEGORI
+            // DETAIL KATEGORI
             composable(route = DestinasiHomeKategori.route) {
                 HomeViewKategori(
                     navController = navController,
@@ -101,7 +105,6 @@ fun PengelolaHalaman(
                     }
                 )
             }
-            // DETAIL KATEGORI
             composable(
                 route = DestinasiDetailKategori.routeWithArgument,
                 arguments = listOf(
@@ -147,6 +150,7 @@ fun PengelolaHalaman(
 
 
 
+
             //===================================   PENULIS   ====================================//
             composable(route = DestinasiHomePenulis.route) {
                 //HomeViewBuku(
@@ -155,18 +159,85 @@ fun PengelolaHalaman(
                     navigateToItemEntry = { navController.navigate(DestinasiEntryPenulis.route) },
                 )
             }
+            // Insert PENULIS
+//            composable(route = DestinasiEntryPenulis.route){
+//                InsertViewPenulis(navigateBack = {
+//                    navController.navigate(DestinasiHomePenulis.route){
+//                        popUpTo(DestinasiHomePenulis.route){
+//                            inclusive = true
+//                        }
+//                    }
+//                })
+//            }
+
+// DETAIL PENULIS
+            composable(route = DestinasiHomePenulis.route) {
+                HomeViewPenulis(
+                    navController = navController,
+                    navigateToItemEntry = { navController.navigate(DestinasiEntryPenulis.route) },
+                    onDetailClick = { idPenulis ->
+                        navController.navigate("${DestinasiDetailPenulis.route}/$idPenulis")
+                    }
+                )
+            }
+            composable(
+                route = DestinasiDetailPenulis.routeWithArgument,
+                arguments = listOf(
+                    navArgument(DestinasiDetailPenulis.idPenulisArg) {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+                val idPenulis = backStackEntry.arguments?.getInt(DestinasiDetailPenulis.idPenulisArg)
+                idPenulis?.let { id ->
+                    DetailViewPenulis(
+                        navigateBack = {
+                            navController.navigate(DestinasiHomePenulis.route) {
+                                popUpTo(DestinasiHomePenulis.route) {
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        navigateToEdit = {
+                            navController.navigate("${DestinasiUpdatePenulis.route}/$idPenulis")
+                        }
+                    )
+                }
+            }
+//// UPDATE PENULIS
+//            composable(
+//                DestinasiUpdatePenulis.routeWithArgument,
+//                arguments = listOf(navArgument(DestinasiUpdatePenulis.idPenulisArg) {
+//                    type = NavType.IntType
+//                })
+//            ) {
+//                val idPenulis = it.arguments?.getInt(DestinasiUpdatePenulis.idPenulisArg)
+//                idPenulis?.let { id ->
+//                    UpdateViewPenulis(
+//                        onBack = { navController.popBackStack() },
+//                        onNavigate = { navController.popBackStack() }
+//                    )
+//                }
+//            }
+
+
+
+
+
+
+
 
 
             //===================================   PENERBIT   ====================================//
-            // Get Penerbit
+            // GET PENERBIT
             composable(route = DestinasiHomePenerbit.route) {
-                //HomeViewBuku (
+                //HomeViewBuku(
                 HomeViewPenerbit(
                     navController = navController,
                     navigateToItemEntry = { navController.navigate(DestinasiEntryPenerbit.route) },
                 )
             }
-            // Insert Penerbit
+// Insert PENERBIT
             composable(route = DestinasiEntryPenerbit.route){
                 InsertViewPenerbit(navigateBack = {
                     navController.navigate(DestinasiHomePenerbit.route){
@@ -176,6 +247,58 @@ fun PengelolaHalaman(
                     }
                 })
             }
+// DETAIL PENERBIT
+            composable(route = DestinasiHomePenerbit.route) {
+                HomeViewPenerbit(
+                    navController = navController,
+                    navigateToItemEntry = { navController.navigate(DestinasiEntryPenerbit.route) },
+                    onDetailClick = { idPenerbit ->
+                        navController.navigate("${DestinasiDetailPenerbit.route}/$idPenerbit")
+                    }
+                )
+            }
+            composable(
+                route = DestinasiDetailPenerbit.routeWithArgument,
+                arguments = listOf(
+                    navArgument(DestinasiDetailPenerbit.idPenerbitArg) {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+                val idPenerbit = backStackEntry.arguments?.getInt(DestinasiDetailPenerbit.idPenerbitArg)
+                idPenerbit?.let { id ->
+                    DetailViewPenerbit(
+                        navigateBack = {
+                            navController.navigate(DestinasiHomePenerbit.route) {
+                                popUpTo(DestinasiHomePenerbit.route) {
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        navigateToEdit = {
+                            navController.navigate("${DestinasiUpdatePenerbit.route}/$idPenerbit")
+                        }
+                    )
+                }
+            }
+// UPDATE PENERBIT
+            composable(
+                DestinasiUpdatePenerbit.routeWithArgument,
+                arguments = listOf(navArgument(DestinasiUpdatePenerbit.idPenerbitArg) {
+                    type = NavType.IntType
+                })
+            ) {
+                val idPenerbit = it.arguments?.getInt(DestinasiUpdatePenerbit.idPenerbitArg)
+                idPenerbit?.let { id ->
+                    UpdateViewPenerbit(
+                        onBack = { navController.popBackStack() },
+                        onNavigate = { navController.popBackStack() }
+                    )
+                }
+            }
+
+
+
 
 
 
