@@ -34,13 +34,7 @@ import com.example.projectakhir.ui.navigasi.DestinasiNavigasi
 import com.example.projectakhir.ui.kategori.viewmodel.DetailViewModelKategori
 import com.example.projectakhir.ui.kategori.viewmodel.toKategori
 
-//// Define navigation object for Kategori details
-//object DestinasiDetailKategori : DestinasiNavigasi {
-//    override val route = "detail_kategori"
-//    const val ID_KATEGORI = "id_kategori"
-//    override val titleRes = "Detail Kategori"
-//    val routeWithArg = "$route/{$ID_KATEGORI}"
-//}
+
 
 object DestinasiDetailKategori : DestinasiNavigasi {
     override val route = "detailKategori"
