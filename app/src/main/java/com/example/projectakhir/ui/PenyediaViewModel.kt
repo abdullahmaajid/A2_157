@@ -12,6 +12,7 @@ import com.example.projectakhir.ui.kategori.viewmodel.*
 import com.example.projectakhir.ui.penerbit.viewmodel.*
 import com.example.projectakhir.ui.penulis.viewmodel.DetailViewModelPenulis
 import com.example.projectakhir.ui.penulis.viewmodel.HomeViewModelPenulis
+import com.example.projectakhir.ui.penulis.viewmodel.InsertViewModelPenulis
 
 object PenyediaViewModel {
     val Factory = viewModelFactory {
@@ -82,11 +83,12 @@ object PenyediaViewModel {
                  PerpustakaanApplication().container.penulisRepository
              )
          }
-        // initializer {
-           //  InsertViewModelPenulis(
-              //  PerpustakaanApplication().container.penulisRepository
-           // )
-       // }
+       initializer {
+         InsertViewModelPenulis(
+             createSavedStateHandle(),
+                PerpustakaanApplication().container.penulisRepository
+           )
+      }
        initializer {
           DetailViewModelPenulis(
                 createSavedStateHandle(),
