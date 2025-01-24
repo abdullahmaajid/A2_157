@@ -31,9 +31,14 @@ import com.example.projectakhir.ui.kategori.viewmodel.KategoriUiEvent
 import com.example.projectakhir.ui.kategori.viewmodel.KategoriUiState1
 import kotlinx.coroutines.launch
 
+//object DestinasiEntryKategori : DestinasiNavigasi {
+//    override val route = "kategori_entry"
+//    override val titleRes = "Entry Kategori"
+//}
+
 object DestinasiEntryKategori : DestinasiNavigasi {
-    override val route = "kategori_entry"
-    override val titleRes = "Entry Kategori"
+    override val route = "entryKategori"
+    override val titleRes = "Tambah Kategori"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
