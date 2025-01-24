@@ -10,6 +10,7 @@ import com.example.projectakhir.ui.buku.viewmodel.*
 import com.example.projectakhir.ui.kategori.viewmodel.*
 import com.example.projectakhir.ui.kategori.viewmodel.*
 import com.example.projectakhir.ui.penerbit.viewmodel.*
+import com.example.projectakhir.ui.penulis.viewmodel.DetailViewModelPenulis
 import com.example.projectakhir.ui.penulis.viewmodel.HomeViewModelPenulis
 
 object PenyediaViewModel {
@@ -86,12 +87,12 @@ object PenyediaViewModel {
               //  PerpustakaanApplication().container.penulisRepository
            // )
        // }
-       // initializer {
-          // DetailViewModelPenulis(
-               //  createSavedStateHandle(),
-                // PerpustakaanApplication().container.penulisRepository
-           //  )
-        // }
+       initializer {
+          DetailViewModelPenulis(
+                createSavedStateHandle(),
+                PerpustakaanApplication().container.penulisRepository
+            )
+        }
         // initializer {
            //  UpdateViewModelPenulis(
 //                createSavedStateHandle(),
@@ -117,18 +118,18 @@ object PenyediaViewModel {
                 PerpustakaanApplication().container.penerbitRepository
             )
         }
-//        initializer {
-//            DetailViewModelPenerbit(
-//                createSavedStateHandle(),
-//                PerpustakaanApplication().container.penerbitRepository
-//            )
-//        }
-//        initializer {
-//            UpdateViewModelPenerbit(
-//                createSavedStateHandle(),
-//                PerpustakaanApplication().container.penerbitRepository
-//            )
-//        }
+        initializer {
+            DetailViewModelPenerbit(
+                createSavedStateHandle(),
+                PerpustakaanApplication().container.penerbitRepository
+            )
+        }
+       initializer {
+            UpdateViewModelPenerbit(
+                createSavedStateHandle(),
+               PerpustakaanApplication().container.penerbitRepository
+            )
+        }
 //        initializer {
 //            DetailViewModelPenerbit(
 //                createSavedStateHandle(),
