@@ -20,17 +20,17 @@ object PenyediaViewModel {
                 PerpustakaanApplication().container.bukuRepository
             )
         }
-        initializer {
-            InsertViewModelBuku(
-                PerpustakaanApplication().container.bukuRepository
-            )
-        }
-        initializer {
-            DetailViewModelBuku(
-                createSavedStateHandle(),
-                PerpustakaanApplication().container.bukuRepository
-            )
-        }
+//        initializer {
+//            InsertViewModelBuku(
+//                PerpustakaanApplication().container.bukuRepository
+//            )
+//        }
+//        initializer {
+//            DetailViewModelBuku(
+//                createSavedStateHandle(),
+//                PerpustakaanApplication().container.bukuRepository
+//            )
+//        }
         //initializer {
             //UpdateViewModelBuku(
                 //createSavedStateHandle(),
@@ -111,8 +111,21 @@ object PenyediaViewModel {
                 PerpustakaanApplication().container.penerbitRepository
             )
         }
+        initializer {
+            InsertViewModelPenerbit(
+                createSavedStateHandle(),
+                PerpustakaanApplication().container.penerbitRepository
+            )
+        }
 //        initializer {
-//            InsertViewModelPenerbit(
+//            DetailViewModelPenerbit(
+//                createSavedStateHandle(),
+//                PerpustakaanApplication().container.penerbitRepository
+//            )
+//        }
+//        initializer {
+//            UpdateViewModelPenerbit(
+//                createSavedStateHandle(),
 //                PerpustakaanApplication().container.penerbitRepository
 //            )
 //        }
