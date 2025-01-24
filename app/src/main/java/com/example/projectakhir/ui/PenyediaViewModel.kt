@@ -13,8 +13,9 @@ import com.example.projectakhir.ui.penerbit.viewmodel.*
 import com.example.projectakhir.ui.penulis.viewmodel.DetailViewModelPenulis
 import com.example.projectakhir.ui.penulis.viewmodel.HomeViewModelPenulis
 import com.example.projectakhir.ui.penulis.viewmodel.InsertViewModelPenulis
+import com.example.projectakhir.ui.penulis.viewmodel.UpdateViewModelPenulis
 
-object PenyediaViewModel {
+    object PenyediaViewModel {
     val Factory = viewModelFactory {
         // Buku
         initializer {
@@ -95,12 +96,12 @@ object PenyediaViewModel {
                 PerpustakaanApplication().container.penulisRepository
             )
         }
-        // initializer {
-           //  UpdateViewModelPenulis(
-//                createSavedStateHandle(),
-//                PerpustakaanApplication().container.penulisRepository
-//            )
-//        }
+         initializer {
+             UpdateViewModelPenulis(
+                createSavedStateHandle(),
+                PerpustakaanApplication().container.penulisRepository
+            )
+        }
 //        initializer {
 //            DeleteViewModelPenulis(
 //                createSavedStateHandle(),
@@ -108,30 +109,31 @@ object PenyediaViewModel {
 //            )
 //        }
 //
-        //Penerbit
-       initializer {
-            HomeViewModelPenerbit(
-                PerpustakaanApplication().container.penerbitRepository
-            )
-        }
-        initializer {
-            InsertViewModelPenerbit(
-                createSavedStateHandle(),
-                PerpustakaanApplication().container.penerbitRepository
-            )
-        }
-        initializer {
-            DetailViewModelPenerbit(
-                createSavedStateHandle(),
-                PerpustakaanApplication().container.penerbitRepository
-            )
-        }
-       initializer {
-            UpdateViewModelPenerbit(
-                createSavedStateHandle(),
-               PerpustakaanApplication().container.penerbitRepository
-            )
-        }
+                 //Penerbit
+                 initializer {
+                     HomeViewModelPenerbit(
+                         PerpustakaanApplication().container.penerbitRepository
+                     )
+                 }
+                         initializer {
+                     InsertViewModelPenerbit(
+                         createSavedStateHandle(),
+                         PerpustakaanApplication().container.penerbitRepository
+                     )
+                 }
+                         initializer {
+                     DetailViewModelPenerbit(
+                         createSavedStateHandle(),
+                         PerpustakaanApplication().container.penerbitRepository
+                     )
+                 }
+                         initializer {
+                     UpdateViewModelPenerbit(
+                         createSavedStateHandle(),
+                         PerpustakaanApplication().container.penerbitRepository
+                     )
+                 }
+         }
 //        initializer {
 //            DetailViewModelPenerbit(
 //                createSavedStateHandle(),
@@ -151,7 +153,7 @@ object PenyediaViewModel {
 //            )
 //        }
     }
-}
+
 
 fun CreationExtras.PerpustakaanApplication(): PerpustakaanApplications =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as PerpustakaanApplications)
