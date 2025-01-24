@@ -20,11 +20,18 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+//object DestinasiUpdateKategori : DestinasiNavigasi {
+//    override val route = "update_kategori"
+//    override val titleRes = "Update Kategori"
+//    const val idKategoriArg = "idKategori"
+//    val routeWithArg = "$route/{$idKategoriArg}"
+//}
+
 object DestinasiUpdateKategori : DestinasiNavigasi {
-    override val route = "update_kategori"
-    override val titleRes = "Update Kategori"
+    override val route = "editKategori"
+    override val titleRes = "Edit Kategori"
+    const val routeWithArgument = "editKategori/{idKategori}"
     const val idKategoriArg = "idKategori"
-    val routeWithArg = "$route/{$idKategoriArg}"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
