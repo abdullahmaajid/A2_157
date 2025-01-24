@@ -30,6 +30,7 @@ import com.example.projectakhir.ui.penerbit.view.UpdateViewPenerbit
 import com.example.projectakhir.ui.penulis.view.DetailViewPenulis
 import com.example.projectakhir.ui.penulis.view.HomeViewPenulis
 import com.example.projectakhir.ui.penulis.view.InsertViewPenulis
+import com.example.projectakhir.ui.penulis.view.UpdateViewPenulis
 
 @Composable
 fun PengelolaHalaman(
@@ -205,21 +206,21 @@ fun PengelolaHalaman(
                     )
                 }
             }
-//// UPDATE PENULIS
-//            composable(
-//                DestinasiUpdatePenulis.routeWithArgument,
-//                arguments = listOf(navArgument(DestinasiUpdatePenulis.idPenulisArg) {
-//                    type = NavType.IntType
-//                })
-//            ) {
-//                val idPenulis = it.arguments?.getInt(DestinasiUpdatePenulis.idPenulisArg)
-//                idPenulis?.let { id ->
-//                    UpdateViewPenulis(
-//                        onBack = { navController.popBackStack() },
-//                        onNavigate = { navController.popBackStack() }
-//                    )
-//                }
-//            }
+//UPDATE PENULIS
+           composable(
+                DestinasiUpdatePenulis.routeWithArgument,
+                arguments = listOf(navArgument(DestinasiUpdatePenulis.idPenulisArg) {
+                    type = NavType.IntType
+                })
+            ) {
+                val idPenulis = it.arguments?.getInt(DestinasiUpdatePenulis.idPenulisArg)
+                idPenulis?.let { id ->
+                    UpdateViewPenulis(
+                        onBack = { navController.popBackStack() },
+                        onNavigate = { navController.popBackStack() }
+                    )
+                }
+            }
 
 
 
