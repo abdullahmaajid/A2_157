@@ -23,6 +23,7 @@ import com.example.projectakhir.ui.navigasi.DestinasiMainScreen
 //import com.example.projectakhir.ui.buku.view.HomeViewBuku
 import com.example.projectakhir.ui.kategori.viewmodel.HomeViewModelKategori
 import com.example.projectakhir.ui.penerbit.view.HomeViewPenerbit
+import com.example.projectakhir.ui.penerbit.view.InsertViewPenerbit
 import com.example.projectakhir.ui.penulis.view.HomeViewPenulis
 
 @Composable
@@ -59,6 +60,8 @@ fun PengelolaHalaman(
                 )
             }
 
+
+            //======================================   BUKU   ====================================//
             composable(route = DestinasiHomeBuku.route) {
                 HomeViewBuku(
                     navController = navController,
@@ -66,6 +69,11 @@ fun PengelolaHalaman(
                 )
             }
 
+
+
+
+            //====================================   KATEGORI   ==================================//
+            // GET KATEGORI
             composable(route = DestinasiHomeKategori.route) {
                 //HomeViewBuku(
                 HomeViewKategori(
@@ -73,42 +81,17 @@ fun PengelolaHalaman(
                     navigateToItemEntry = { navController.navigate(DestinasiEntryKategori.route) },
                 )
             }
-
-            composable(route = DestinasiHomePenulis.route) {
-                //HomeViewBuku(
-                HomeViewPenulis(
-                    navController = navController,
-                    navigateToItemEntry = { navController.navigate(DestinasiEntryPenulis.route) },
-                )
-            }
-
-            composable(route = DestinasiHomePenerbit.route) {
-                //HomeViewBuku (
-                HomeViewPenerbit(
-                    navController = navController,
-                    navigateToItemEntry = { navController.navigate(DestinasiEntryPenerbit.route) },
-                )
-            }
-
-
-
-
-
-
-
-        composable(route = DestinasiEntryKategori.route){
-            InsertViewKategori(navigateBack = {
-                navController.navigate(DestinasiHomeKategori.route){
-                    popUpTo(DestinasiHomeKategori.route){
-                        inclusive = true
+            // Insert KATEGORI
+            composable(route = DestinasiEntryKategori.route){
+                InsertViewKategori(navigateBack = {
+                    navController.navigate(DestinasiHomeKategori.route){
+                        popUpTo(DestinasiHomeKategori.route){
+                            inclusive = true
+                        }
                     }
-                }
-            })
-        }
-
-
-
-            // TAMBAH KATEGORI
+                })
+            }
+            // DELETE KATEGORI
             composable(route = DestinasiHomeKategori.route) {
                 HomeViewKategori(
                     navController = navController,
@@ -118,24 +101,6 @@ fun PengelolaHalaman(
                     }
                 )
             }
-
-
-
-//            //// Define navigation object for Kategori details
-////object DestinasiDetailKategori : DestinasiNavigasi {
-////    override val route = "detail_kategori"
-////    const val ID_KATEGORI = "id_kategori"
-////    override val titleRes = "Detail Kategori"
-////    val routeWithArg = "$route/{$ID_KATEGORI}"
-////}
-//
-//            object DestinasiDetailKategori : DestinasiNavigasi {
-//                override val route = "detailKategori"
-//                const val idKategoriArg = "idKategori"
-//                override val titleRes = "Detail Kategori"
-//                const val routeWithArgument = "detailKategori/{idKategori}"
-//            }
-
             // DETAIL KATEGORI
             composable(
                 route = DestinasiDetailKategori.routeWithArgument,
@@ -161,7 +126,7 @@ fun PengelolaHalaman(
                     )
                 }
             }
-
+            // UPDATE KATEGORI
             composable(
                 DestinasiUpdateKategori.routeWithArgument,
                 arguments = listOf(navArgument(DestinasiUpdateKategori.idKategoriArg) {
@@ -179,80 +144,50 @@ fun PengelolaHalaman(
 
 
 
-//            composable(
-//                route = DestinasiDetailKategori.routeWithArgument,
-//                arguments = listOf(
-//                    navArgument(DestinasiDetailKategori.idKategoriArg) { type = NavType.IntType }
-//                )
-//            ) { backStackEntry ->
-//                // Retrieve the argument from the navigation route
-//                val idKategori = backStackEntry.arguments?.getInt(DestinasiDetailKategori.ID_KATEGORI)
-//                requireNotNull(idKategori) { "ID Kategori is required for this route" }
-//
-//                // Initialize ViewModel with SavedStateHandle
-//                val viewModel: DetailViewModelKategori = viewModel(
-//                    factory = PenyediaViewModel.Factory
-//                )
-//
-//                // Pass navigation actions
-//                DetailViewKategori(
-//                    navigateBack = { navController.popBackStack() },
-//                    navigateToEdit = {
-//                        navController.navigate("edit_kategori/$idKategori")
-//                    }
-//                )
-//            }
 
 
 
-
-
-
-            // Nonaktifkan sementara
-            /*
-        composable(route = DestinasiEntryBuku.route) {
-            EntryViewBuku(
-                onBackClick = { navController.popBackStack() },
-                onSaveClick = {
-                    // Logika untuk menyimpan buku
-                    navController.popBackStack()
-                }
-            )
-        }
-
-        composable(
-            route = DestinasiDetailBuku.routeWithArgument,
-            arguments = listOf(navArgument(DestinasiDetailBuku.idBukuArg) { type = NavType.IntType })
-        ) { backStackEntry ->
-            val idBuku = backStackEntry.arguments?.getInt(DestinasiDetailBuku.idBukuArg)
-            idBuku?.let {
-                DetailViewBuku(
-                    idBuku = it,
-                    onBackClick = { navController.popBackStack() },
-                    onEditClick = { idBuku ->
-                        navController.navigate("${DestinasiEditBuku.route}/$idBuku")
-                    }
+            //===================================   PENULIS   ====================================//
+            composable(route = DestinasiHomePenulis.route) {
+                //HomeViewBuku(
+                HomeViewPenulis(
+                    navController = navController,
+                    navigateToItemEntry = { navController.navigate(DestinasiEntryPenulis.route) },
                 )
             }
-        }
 
-        composable(
-            route = DestinasiEditBuku.routeWithArgument,
-            arguments = listOf(navArgument(DestinasiEditBuku.idBukuArg) { type = NavType.IntType })
-        ) { backStackEntry ->
-            val idBuku = backStackEntry.arguments?.getInt(DestinasiEditBuku.idBukuArg)
-            idBuku?.let {
-                EditViewBuku(
-                    idBuku = it,
-                    onBackClick = { navController.popBackStack() },
-                    onSaveClick = {
-                        // Logika untuk menyimpan perubahan buku
-                        navController.popBackStack()
-                    }
+
+            //===================================   PENERBIT   ====================================//
+            // Get Penerbit
+            composable(route = DestinasiHomePenerbit.route) {
+                //HomeViewBuku (
+                HomeViewPenerbit(
+                    navController = navController,
+                    navigateToItemEntry = { navController.navigate(DestinasiEntryPenerbit.route) },
                 )
             }
-        }
-        */
+            // Insert Penerbit
+            composable(route = DestinasiEntryPenerbit.route){
+                InsertViewPenerbit(navigateBack = {
+                    navController.navigate(DestinasiHomePenerbit.route){
+                        popUpTo(DestinasiHomePenerbit.route){
+                            inclusive = true
+                        }
+                    }
+                })
+            }
+
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 }
