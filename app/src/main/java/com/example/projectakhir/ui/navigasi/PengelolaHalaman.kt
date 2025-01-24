@@ -29,6 +29,7 @@ import com.example.projectakhir.ui.penerbit.view.InsertViewPenerbit
 import com.example.projectakhir.ui.penerbit.view.UpdateViewPenerbit
 import com.example.projectakhir.ui.penulis.view.DetailViewPenulis
 import com.example.projectakhir.ui.penulis.view.HomeViewPenulis
+import com.example.projectakhir.ui.penulis.view.InsertViewPenulis
 
 @Composable
 fun PengelolaHalaman(
@@ -159,16 +160,16 @@ fun PengelolaHalaman(
                     navigateToItemEntry = { navController.navigate(DestinasiEntryPenulis.route) },
                 )
             }
-            // Insert PENULIS
-//            composable(route = DestinasiEntryPenulis.route){
-//                InsertViewPenulis(navigateBack = {
-//                    navController.navigate(DestinasiHomePenulis.route){
-//                        popUpTo(DestinasiHomePenulis.route){
-//                            inclusive = true
-//                        }
-//                    }
-//                })
-//            }
+         //Insert PENULIS
+            composable(route = DestinasiEntryPenulis.route){
+               InsertViewPenulis(navigateBack = {
+                    navController.navigate(DestinasiHomePenulis.route){
+                        popUpTo(DestinasiHomePenulis.route){
+                            inclusive = true
+                        }
+                    }
+                })
+            }
 
 // DETAIL PENULIS
             composable(route = DestinasiHomePenulis.route) {
