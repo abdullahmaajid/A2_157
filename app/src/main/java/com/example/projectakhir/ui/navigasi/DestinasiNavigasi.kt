@@ -18,10 +18,31 @@ object DestinasiHomeBuku : DestinasiNavigasi {
     override val titleRes = "Daftar Buku"
 }
 
+
+//object DestinasiEntryBuku : DestinasiNavigasi {
+//    override val route = "entryBuku"
+//    override val titleRes = "Entry Buku"
+//}
+//object DestinasiDetailBuku : DestinasiNavigasi {
+//    override val route = "detailBuku"
+//    override val titleRes = "Detail Buku"
+//    const val idBukuArg = "idBuku"
+//    val routeWithArgument = "$route/{$idBukuArg}"
+//}
+//object DestinasiUpdateBuku : DestinasiNavigasi {
+//    override val route = "updateBuku"
+//    override val titleRes = "Update Properti"
+//    const val idBukuArg = "idBuku"
+//    val routeWithArgument = "$route/{$idBukuArg}"
+//}
+
+
+
 object DestinasiEntryBuku : DestinasiNavigasi {
     override val route = "entryBuku"
     override val titleRes = "Tambah Buku"
 }
+
 
 object DestinasiDetailBuku : DestinasiNavigasi {
     override val route = "detailBuku"
@@ -37,12 +58,21 @@ object DestinasiUpdateBuku : DestinasiNavigasi {
     const val idBukuArg = "idBuku"
 }
 
-object DestinasiDeleteBuku : DestinasiNavigasi {
-    override val route = "deleteBuku"
-    override val titleRes = "Hapus Buku"
-    const val routeWithArgument = "deleteBuku/{idBuku}"
-    const val idBukuArg = "idBuku"
-}
+
+
+
+
+
+
+
+
+
+//object DestinasiDeleteBuku : DestinasiNavigasi {
+//    override val route = "deleteBuku"
+//    override val titleRes = "Hapus Buku"
+//    const val routeWithArgument = "deleteBuku/{idBuku}"
+//    const val idBukuArg = "idBuku"
+//}
 
 
 
@@ -62,6 +92,8 @@ object DestinasiDetailKategori : DestinasiNavigasi {
     override val titleRes = "Detail Kategori"
     const val routeWithArgument = "detailKategori/{idKategori}"
     const val idKategoriArg = "idKategori"
+
+
 }
 
 object DestinasiUpdateKategori : DestinasiNavigasi {
@@ -70,6 +102,8 @@ object DestinasiUpdateKategori : DestinasiNavigasi {
     const val routeWithArgument = "editKategori/{idKategori}"
     const val idKategoriArg = "idKategori"
 }
+
+
 
 //object DestinasiDeleteKategori : DestinasiNavigasi {
 //    override val route = "deleteKategori"
@@ -135,12 +169,12 @@ object DestinasiUpdatePenerbit : DestinasiNavigasi {
     const val idPenerbitArg = "idPenerbit"
 }
 
-object DestinasiDeletePenerbit : DestinasiNavigasi {
-    override val route = "deletePenerbit"
-    override val titleRes = "Hapus Penerbit"
-    const val routeWithArgument = "deletePenerbit/{idPenerbit}"
-    const val idPenerbitArg = "idPenerbit"
-}
+//object DestinasiDeletePenerbit : DestinasiNavigasi {
+//    override val route = "deletePenerbit"
+//    override val titleRes = "Hapus Penerbit"
+//    const val routeWithArgument = "deletePenerbit/{idPenerbit}"
+//    const val idPenerbitArg = "idPenerbit"
+//}
 
 
 
