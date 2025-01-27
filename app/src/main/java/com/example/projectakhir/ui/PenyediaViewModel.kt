@@ -38,11 +38,22 @@ import com.example.projectakhir.ui.penulis.viewmodel.UpdateViewModelPenulis
             DetailViewModelBuku(
                 createSavedStateHandle(),
                 PerpustakaanApplication().container.bukuRepository,
-                PerpustakaanApplications().container.kategoriRepository,
+                PerpustakaanApplication().container.kategoriRepository,
                 PerpustakaanApplication().container.penulisRepository,
                 PerpustakaanApplication().container.penerbitRepository
            )
         }
+        initializer {
+            UpdateViewModelBuku(
+                createSavedStateHandle(),
+                PerpustakaanApplication().container.bukuRepository,
+                PerpustakaanApplication().container.kategoriRepository,
+                PerpustakaanApplication().container.penulisRepository,
+                PerpustakaanApplication().container.penerbitRepository
+            )
+        }
+
+
         //initializer {
             //UpdateViewModelBuku(
                 //createSavedStateHandle(),
