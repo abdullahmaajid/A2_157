@@ -37,15 +37,15 @@ import com.example.projectakhir.ui.buku.viewmodel.HomeUiState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeViewBuku(
-    navigateToItemEntry:()->Unit,
+    navigateToItemEntry: () -> Unit,
     modifier: Modifier = Modifier,
-    onDetailClick: (String) -> Unit ={},
+    onDetailClick: (String) -> Unit = {},
     navController: NavController,
-    onBackClick: () -> Unit = {},
+    onBackClick: () -> Unit = {}, // Tambahkan parameter ini
     viewModel: HomeViewModelBuku = viewModel(factory = PenyediaViewModel.Factory)
-){
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    Scaffold (
+    Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
@@ -59,10 +59,10 @@ fun HomeViewBuku(
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick ={navController.popBackStack() }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                    IconButton(onClick ={viewModel.getBuku() }) {
+                    IconButton(onClick = { viewModel.getBuku() }) {
                         Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
                     }
                 },
@@ -78,16 +78,17 @@ fun HomeViewBuku(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Buku")
             }
         },
-    ) {innerPadding ->
+    ) { innerPadding ->
         BukuStatus(
             homeUiState = viewModel.homeUiState,
-            retryAction = {viewModel.getBuku() },
+            retryAction = { viewModel.getBuku() },
             modifier = Modifier.padding(innerPadding),
             onDetailClick = onDetailClick,
             onDeleteClick = {
                 viewModel.deleteBuku(it.idBuku)
                 viewModel.getBuku()
-            }
+            },
+            onBackClick = onBackClick // Teruskan ke BukuStatus
         )
     }
 }
@@ -98,28 +99,27 @@ fun BukuStatus(
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     onDeleteClick: (Buku) -> Unit = {},
-    onDetailClick: (String) -> Unit
-){
-    when (homeUiState){
-        is HomeUiState.Loading-> OnLoading(modifier = modifier.fillMaxSize())
-
-
+    onDetailClick: (String) -> Unit,
+    onBackClick: () -> Unit = {} // Tambahkan parameter ini
+) {
+    when (homeUiState) {
+        is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
         is HomeUiState.Success ->
-            if(homeUiState.buku.isEmpty()){
-                return Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+            if (homeUiState.buku.isEmpty()) {
+                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(text = "Tidak ada data", style = MaterialTheme.typography.bodyMedium)
                 }
-            }else{
+            } else {
                 BukuLayout(
                     buku = homeUiState.buku,
                     modifier = modifier.fillMaxWidth(),
                     onDetailClick = {
                         onDetailClick(it.idBuku.toString())
                     },
-                    // lengkapi disini dong
                     onDeleteClick = { buku ->
                         onDeleteClick(buku)
-                    }
+                    },
+                    onBackClick = onBackClick // Teruskan ke BukuLayout
                 )
             }
         is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
@@ -159,7 +159,8 @@ fun BukuLayout(
     buku: List<Buku>,
     modifier: Modifier = Modifier,
     onDetailClick: (Buku) -> Unit,
-    onDeleteClick: (Buku) -> Unit = {}
+    onDeleteClick: (Buku) -> Unit = {},
+    onBackClick: () -> Unit = {} // Tambahkan parameter ini
 ) {
     LazyColumn(
         modifier = modifier,
@@ -172,7 +173,8 @@ fun BukuLayout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onDetailClick(buku) },
-                onDeleteClick = { onDeleteClick(buku) }
+                onDeleteClick = { onDeleteClick(buku) },
+                onBackClick = onBackClick // Teruskan ke BukuCard
             )
         }
     }
@@ -183,7 +185,8 @@ fun BukuCard(
     buku: Buku,
     modifier: Modifier = Modifier,
     onDeleteClick: (Buku) -> Unit = {},
-    onEditClick: (Buku) -> Unit = {}
+    onEditClick: (Buku) -> Unit = {},
+    onBackClick: () -> Unit = {} // Tambahkan parameter ini
 ) {
     Card(
         modifier = modifier,
@@ -199,6 +202,17 @@ fun BukuCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Tombol Back
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                Spacer(Modifier.width(8.dp)) // Jarak antara tombol Back dan judul
+
                 Text(
                     text = buku.namaBuku,
                     style = MaterialTheme.typography.titleLarge
@@ -234,26 +248,6 @@ fun BukuCard(
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
-//                Divider()
-//                Text(
-//                    text = "Kategori: $kategori",  // Displaying category name
-//                    style = MaterialTheme.typography.bodyMedium,
-//                    color = MaterialTheme.colorScheme.onSurface,
-//                    modifier = Modifier.padding(bottom = 4.dp)
-//                )
-//                Divider()
-//                Text(
-//                    text = "Penulis: $penulis",  // Displaying author name
-//                    style = MaterialTheme.typography.bodyMedium,
-//                    color = MaterialTheme.colorScheme.onSurface,
-//                    modifier = Modifier.padding(bottom = 4.dp)
-//                )
-//                Divider()
-//                Text(
-//                    text = "Penerbit: $penerbit",  // Displaying publisher name
-//                    style = MaterialTheme.typography.bodyMedium,
-//                    color = MaterialTheme.colorScheme.onSurface
-//                )
             }
         }
     }
