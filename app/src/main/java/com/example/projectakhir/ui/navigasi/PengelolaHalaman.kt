@@ -19,6 +19,8 @@ import com.example.projectakhir.ui.buku.view.DetailViewBuku
 //import com.example.projectakhir.ui.buku.view.DetailViewBuku
 import com.example.projectakhir.ui.buku.view.HomeViewBuku
 import com.example.projectakhir.ui.buku.view.InsertViewBuku
+import com.example.projectakhir.ui.buku.view.UpdateViewBuku
+//import com.example.projectakhir.ui.buku.view.UpdateViewBuku
 import com.example.projectakhir.ui.buku.viewmodel.DetailViewModelBuku
 import com.example.projectakhir.ui.kategori.view.DetailViewKategori
 import com.example.projectakhir.ui.kategori.view.HomeViewKategori
@@ -127,6 +129,23 @@ fun PengelolaHalaman(
                             navController.navigate("${DestinasiUpdateBuku.route}/$idBuku")
                         },
                         navController = navController // Pastikan navController diteruskan
+                    )
+                }
+            }
+
+            composable(
+                route = DestinasiUpdateBuku.routeWithArgument,
+                arguments = listOf(
+                    navArgument(DestinasiUpdateBuku.idBukuArg) {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+                val idBuku = backStackEntry.arguments?.getInt(DestinasiUpdateBuku.idBukuArg)
+                idBuku?.let { id ->
+                    UpdateViewBuku(
+                        onBack = { navController.popBackStack() },
+                        onNavigate = { navController.popBackStack() }
                     )
                 }
             }
