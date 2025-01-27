@@ -1,6 +1,7 @@
 package com.example.projectakhir.ui.buku.view
 
 
+import android.util.Property
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -31,38 +32,37 @@ import com.example.projectakhir.ui.buku.viewmodel.HomeViewModelBuku
 import com.example.projectakhir.R
 import com.example.projectakhir.data.model.Buku
 import com.example.projectakhir.ui.buku.viewmodel.BukuUiState
+import com.example.projectakhir.ui.buku.viewmodel.HomeUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeViewBuku(
-    navigateToItemEntry: () -> Unit,
+    navigateToItemEntry:()->Unit,
     modifier: Modifier = Modifier,
-    onDetailClick: (String) -> Unit = {},
+    onDetailClick: (String) -> Unit ={},
     navController: NavController,
     onBackClick: () -> Unit = {},
     viewModel: HomeViewModelBuku = viewModel(factory = PenyediaViewModel.Factory)
-) {
+){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    Scaffold(
+    Scaffold (
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 title = {
-                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Text(
                             text = "Daftar Buku",
                             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                            color = Color.Black,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick ={navController.popBackStack() }) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                },
-                actions = {
-                    IconButton(onClick = { viewModel.getBuku() }) {
+                    IconButton(onClick ={viewModel.getBuku() }) {
                         Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
                     }
                 },
@@ -78,10 +78,10 @@ fun HomeViewBuku(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Buku")
             }
         },
-    ) { innerPadding ->
+    ) {innerPadding ->
         BukuStatus(
-            bukuUiState = viewModel.bukuUiState,
-            retryAction = { viewModel.getBuku() },
+            homeUiState = viewModel.homeUiState,
+            retryAction = {viewModel.getBuku() },
             modifier = Modifier.padding(innerPadding),
             onDetailClick = onDetailClick,
             onDeleteClick = {
@@ -94,29 +94,35 @@ fun HomeViewBuku(
 
 @Composable
 fun BukuStatus(
-    bukuUiState: BukuUiState,
+    homeUiState: HomeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     onDeleteClick: (Buku) -> Unit = {},
     onDetailClick: (String) -> Unit
-) {
-    when (bukuUiState) {
-        is BukuUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
-        is BukuUiState.Success -> {
-            if (bukuUiState.buku.isEmpty()) {
-                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "Tidak ada data buku", style = MaterialTheme.typography.bodyMedium)
+){
+    when (homeUiState){
+        is HomeUiState.Loading-> OnLoading(modifier = modifier.fillMaxSize())
+
+
+        is HomeUiState.Success ->
+            if(homeUiState.buku.isEmpty()){
+                return Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                    Text(text = "Tidak ada data", style = MaterialTheme.typography.bodyMedium)
                 }
-            } else {
+            }else{
                 BukuLayout(
-                    buku = bukuUiState.buku,
+                    buku = homeUiState.buku,
                     modifier = modifier.fillMaxWidth(),
-                    onDetailClick = { onDetailClick(it.idBuku.toString()) },
-                            onDeleteClick = { onDeleteClick(it) }
+                    onDetailClick = {
+                        onDetailClick(it.idBuku.toString())
+                    },
+                    // lengkapi disini dong
+                    onDeleteClick = { buku ->
+                        onDeleteClick(buku)
+                    }
                 )
             }
-        }
-        is BukuUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
+        is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
     }
 }
 
@@ -140,12 +146,8 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(16.dp)
         ) {
             Image(painter = painterResource(id = R.drawable.no_wifi), contentDescription = "")
-            Text(
-                text = stringResource(R.string.loading_failed),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(16.dp)
-            )
-            Button(onClick = retryAction, modifier = Modifier.padding(top = 16.dp)) {
+            Text(text = stringResource(R.string.loading_failed), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(16.dp))
+            Button(onClick = retryAction) {
                 Text(stringResource(R.string.retry))
             }
         }
@@ -185,14 +187,9 @@ fun BukuCard(
 ) {
     Card(
         modifier = modifier,
-        shape = MaterialTheme.shapes.large,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 12.dp,
-            pressedElevation = 16.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF5F5F5)
-        ),
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -208,6 +205,7 @@ fun BukuCard(
                 )
                 Spacer(Modifier.weight(1f))
 
+                // Delete Button
                 IconButton(onClick = { onDeleteClick(buku) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -215,39 +213,48 @@ fun BukuCard(
                         tint = MaterialTheme.colorScheme.error
                     )
                 }
-
-                IconButton(onClick = { onEditClick(buku) }) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Buku",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
             }
-
             Divider()
-
             Column {
                 Text(
-                    text = "ID Buku: ${buku.idBuku}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
                     text = "Deskripsi: ${buku.deskripsiBuku}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = "Tanggal Terbit: ${buku.tanggalTerbit}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = "Status: ${buku.statusBuku}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
+//                Divider()
+//                Text(
+//                    text = "Kategori: $kategori",  // Displaying category name
+//                    style = MaterialTheme.typography.bodyMedium,
+//                    color = MaterialTheme.colorScheme.onSurface,
+//                    modifier = Modifier.padding(bottom = 4.dp)
+//                )
+//                Divider()
+//                Text(
+//                    text = "Penulis: $penulis",  // Displaying author name
+//                    style = MaterialTheme.typography.bodyMedium,
+//                    color = MaterialTheme.colorScheme.onSurface,
+//                    modifier = Modifier.padding(bottom = 4.dp)
+//                )
+//                Divider()
+//                Text(
+//                    text = "Penerbit: $penerbit",  // Displaying publisher name
+//                    style = MaterialTheme.typography.bodyMedium,
+//                    color = MaterialTheme.colorScheme.onSurface
+//                )
             }
         }
     }
 }
-
-
-
