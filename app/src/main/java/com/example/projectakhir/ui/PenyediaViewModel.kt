@@ -8,7 +8,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.projectakhir.data.applications.PerpustakaanApplications
 import com.example.projectakhir.ui.buku.viewmodel.*
 import com.example.projectakhir.ui.kategori.viewmodel.*
-import com.example.projectakhir.ui.kategori.viewmodel.*
 import com.example.projectakhir.ui.penerbit.viewmodel.*
 import com.example.projectakhir.ui.penulis.viewmodel.DetailViewModelPenulis
 import com.example.projectakhir.ui.penulis.viewmodel.HomeViewModelPenulis
@@ -23,17 +22,27 @@ import com.example.projectakhir.ui.penulis.viewmodel.UpdateViewModelPenulis
                 PerpustakaanApplication().container.bukuRepository
             )
         }
-//        initializer {
-//            InsertViewModelBuku(
-//                PerpustakaanApplication().container.bukuRepository
-//            )
-//        }
-//        initializer {
-//            DetailViewModelBuku(
-//                createSavedStateHandle(),
-//                PerpustakaanApplication().container.bukuRepository
-//            )
-//        }
+        initializer {
+            InsertViewModelBuku(
+                //createSavedStateHandle(),
+                createSavedStateHandle(),
+                PerpustakaanApplication().container.bukuRepository,
+                PerpustakaanApplication().container.kategoriRepository,
+                PerpustakaanApplication().container.penulisRepository,
+                PerpustakaanApplication().container.penerbitRepository
+            )
+
+
+        }
+        initializer {
+            DetailViewModelBuku(
+                createSavedStateHandle(),
+                PerpustakaanApplication().container.bukuRepository,
+                PerpustakaanApplications().container.kategoriRepository,
+                PerpustakaanApplication().container.penulisRepository,
+                PerpustakaanApplication().container.penerbitRepository
+           )
+        }
         //initializer {
             //UpdateViewModelBuku(
                 //createSavedStateHandle(),
