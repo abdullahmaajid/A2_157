@@ -28,5 +28,9 @@ data class Buku  (
     val idPenulis: Int,
 
     @SerialName("id_penerbit")
-    val idPenerbit: Int
-)
+    val idPenerbit: Int,
+
+    )
+
+
+
