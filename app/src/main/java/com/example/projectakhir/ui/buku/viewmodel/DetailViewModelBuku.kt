@@ -36,28 +36,33 @@ class DetailViewModelBuku(
         private set
 
     init {
-        getByIdBuku()
+        getBukuById()
     }
 
-    fun getByIdBuku() {
+    fun getBukuById() {
         viewModelScope.launch {
             detailBukuUiState = DetailBukuUiState(isLoading = true)
             try {
-                // Ambil data buku
                 val buku = bukuRepository.getBukuById(idBuku)
-                // Ambil data kategori, penulis, dan penerbit
-                val kategori = kategoriRepository.getKategoriById(buku.idKategori)
-                val penulis = penulisRepository.getPenulisById(buku.idPenulis)
-                val penerbit = penerbitRepository.getPenerbitById(buku.idPenerbit)
+                if (buku != null) {
+                    val kategori = kategoriRepository.getKategoriById(buku.idKategori)
+                    val penulis = penulisRepository.getPenulisById(buku.idPenulis)
+                    val penerbit = penerbitRepository.getPenerbitById(buku.idPenerbit)
 
-                // Update state
-                detailBukuUiState = DetailBukuUiState(
-                    detailBukuUiEvent = buku.toDetailBukuUiEvent(kategori, penulis, penerbit),
-                    kategori = kategori,
-                    penulis = penulis,
-                    penerbit = penerbit,
-                    isLoading = false
-                )
+                    detailBukuUiState = DetailBukuUiState(
+                        detailBukuUiEvent = buku.toDetailBukuUiEvent(kategori, penulis, penerbit),
+                        kategori = kategori,
+                        penulis = penulis,
+                        penerbit = penerbit,
+                        isLoading = false
+                    )
+                } else {
+                    detailBukuUiState = DetailBukuUiState(
+                        isLoading = false,
+                        isError = true,
+                        errorMessage = "Buku tidak ditemukan"
+                    )
+                }
             } catch (e: Exception) {
                 detailBukuUiState = DetailBukuUiState(
                     isLoading = false,
@@ -134,187 +139,3 @@ fun DetailBukuUiEvent.toBuku(): Buku {
     )
 }
 
-
-
-//// Define navigation object for Buku details
-//object DestinasiDetailBuku : DestinasiNavigasi {
-//    override val route = "detailBuku"
-//    const val idBukuArg = "idBuku"
-//    override val titleRes = "Detail Buku"
-//    const val routeWithArgument = "detailBuku/{idBuku}"
-//}
-//
-//// State untuk UI Detail Buku
-//sealed class DetailUiStateBuku {
-//    data class Success(
-//        val buku: Buku,
-//        val kategori: Kategori?,
-//        val penulis: Penulis?,
-//        val penerbit: Penerbit?
-//    ) : DetailUiStateBuku()
-//
-//    object Loading : DetailUiStateBuku()
-//    data class Error(val message: String) : DetailUiStateBuku()
-//}
-//
-//class DetailViewModelBuku(
-//    savedStateHandle: SavedStateHandle,
-//    private val bukuRepository: BukuRepository
-//) : ViewModel() {
-//
-//    var detailUiState: DetailUiStateBuku by mutableStateOf(DetailUiStateBuku.Loading)
-//        private set
-//
-//    private val idBuku: Int = checkNotNull(savedStateHandle[DestinasiDetailBuku.idBukuArg])
-//
-//    init {
-//        getBukuDetail()
-//    }
-//
-//    private fun getBukuDetail() {
-//        viewModelScope.launch {
-//            detailUiState = DetailUiStateBuku.Loading
-//            try {
-//                // Ambil data buku
-//                val bukuResponse: Response<Buku> = bukuRepository.getBukuById(idBuku)
-//                if (!bukuResponse.isSuccessful || bukuResponse.body() == null) {
-//                    detailUiState = DetailUiStateBuku.Error("Gagal memuat data buku")
-//                    return@launch
-//                }
-//                val buku = bukuResponse.body()!!
-//
-//                // Ambil data kategori
-//                val kategoriResponse: Response<List<Kategori>> = bukuRepository.getKategoriList()
-//                val kategori = if (kategoriResponse.isSuccessful) {
-//                    kategoriResponse.body()?.find { it.idKategori == buku.idKategori }
-//                } else {
-//                    null
-//                }
-//
-//                // Ambil data penulis
-//                val penulisResponse: Response<List<Penulis>> = bukuRepository.getPenulisList()
-//                val penulis = if (penulisResponse.isSuccessful) {
-//                    penulisResponse.body()?.find { it.idPenulis == buku.idPenulis }
-//                } else {
-//                    null
-//                }
-//
-//                // Ambil data penerbit
-//                val penerbitResponse: Response<List<Penerbit>> = bukuRepository.getPenerbitList()
-//                val penerbit = if (penerbitResponse.isSuccessful) {
-//                    penerbitResponse.body()?.find { it.idPenerbit == buku.idPenerbit }
-//                } else {
-//                    null
-//                }
-//
-//                // Update state dengan data yang berhasil diambil
-//                detailUiState = DetailUiStateBuku.Success(buku, kategori, penulis, penerbit)
-//            } catch (e: Exception) {
-//                detailUiState = DetailUiStateBuku.Error(e.message ?: "Terjadi kesalahan")
-//            }
-//        }
-//    }
-//}
-
-
-
-
-
-
-
-
-//import androidx.compose.runtime.getValue
-//import androidx.compose.runtime.mutableStateOf
-//import androidx.compose.runtime.setValue
-//import androidx.lifecycle.SavedStateHandle
-//import androidx.lifecycle.ViewModel
-//import androidx.lifecycle.viewModelScope
-//import com.example.projectakhir.data.model.Buku
-//import com.example.projectakhir.data.model.Kategori
-//import com.example.projectakhir.data.model.Penerbit
-//import com.example.projectakhir.data.model.Penulis
-//import com.example.projectakhir.data.repository.BukuRepository
-//import com.example.projectakhir.ui.navigasi.DestinasiNavigasi
-//import kotlinx.coroutines.launch
-//
-//// Define navigation object for Buku details
-//object DestinasiDetailBuku : DestinasiNavigasi {
-//    override val route = "detailBuku"
-//    const val idBukuArg = "idBuku"
-//    override val titleRes = "Detail Buku"
-//    const val routeWithArgument = "detailBuku/{idBuku}"
-//}
-//
-//
-//
-//// State untuk UI Detail Buku
-//sealed class DetailUiStateBuku {
-//    data class Success(
-//        val buku: Buku,
-//        val kategori: Kategori?,
-//        val penulis: Penulis?,
-//        val penerbit: Penerbit?
-//    ) : DetailUiStateBuku()
-//
-//    object Loading : DetailUiStateBuku()
-//    data class Error(val message: String) : DetailUiStateBuku()
-//}
-//
-//class DetailViewModelBuku(
-//    savedStateHandle: SavedStateHandle,
-//    private val bukuRepository: BukuRepository
-//) : ViewModel() {
-//
-//    var detailUiState: DetailUiStateBuku by mutableStateOf(DetailUiStateBuku.Loading)
-//        private set
-//
-//    private val idBuku: Int = checkNotNull(savedStateHandle[DestinasiDetailBuku.idBukuArg])
-//
-//    init {
-//        getBukuDetail()
-//    }
-//
-//    private fun getBukuDetail() {
-//        viewModelScope.launch {
-//            detailUiState = DetailUiStateBuku.Loading
-//            try {
-//                // Ambil data buku
-//                val bukuResponse = bukuRepository.getBukuById(idBuku)
-//                if (!bukuResponse.isSuccessful || bukuResponse.body() == null) {
-//                    detailUiState = DetailUiStateBuku.Error("Gagal memuat data buku")
-//                    return@launch
-//                }
-//                val buku = bukuResponse.body()!!
-//
-//                // Ambil data kategori
-//                val kategoriResponse = bukuRepository.getKategoriList()
-//                val kategori = if (kategoriResponse.isSuccessful) {
-//                    kategoriResponse.body()?.find { it.idKategori == buku.idKategori }
-//                } else {
-//                    null
-//                }
-//
-//                // Ambil data penulis
-//                val penulisResponse = bukuRepository.getPenulisList()
-//                val penulis = if (penulisResponse.isSuccessful) {
-//                    penulisResponse.body()?.find { it.idPenulis == buku.idPenulis }
-//                } else {
-//                    null
-//                }
-//
-//                // Ambil data penerbit
-//                val penerbitResponse = bukuRepository.getPenerbitList()
-//                val penerbit = if (penerbitResponse.isSuccessful) {
-//                    penerbitResponse.body()?.find { it.idPenerbit == buku.idPenerbit }
-//                } else {
-//                    null
-//                }
-//
-//                // Update state dengan data yang berhasil diambil
-//                detailUiState = DetailUiStateBuku.Success(buku, kategori, penulis, penerbit)
-//            } catch (e: Exception) {
-//                detailUiState = DetailUiStateBuku.Error(e.message ?: "Terjadi kesalahan")
-//            }
-//        }
-//    }
-//}
