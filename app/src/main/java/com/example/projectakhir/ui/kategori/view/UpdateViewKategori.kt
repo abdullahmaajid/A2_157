@@ -63,7 +63,7 @@ fun UpdateViewKategori(
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.updateKategori()
-                    delay(600) // Wait for update operation to complete
+                    delay(6) // Wait for update operation to complete
                     withContext(Dispatchers.Main) {
                         onNavigate() // Navigate to the desired destination
                     }
