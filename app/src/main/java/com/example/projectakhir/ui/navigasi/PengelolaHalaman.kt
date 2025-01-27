@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,7 +13,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.projectakhir.ui.HomeApp
+import com.example.projectakhir.ui.PenyediaViewModel
+import com.example.projectakhir.ui.buku.view.DetailViewBuku
+//import com.example.projectakhir.ui.buku.view.DetailViewBuku
+//import com.example.projectakhir.ui.buku.view.DetailViewBuku
 import com.example.projectakhir.ui.buku.view.HomeViewBuku
+import com.example.projectakhir.ui.buku.view.InsertViewBuku
+import com.example.projectakhir.ui.buku.viewmodel.DetailViewModelBuku
 import com.example.projectakhir.ui.kategori.view.DetailViewKategori
 import com.example.projectakhir.ui.kategori.view.HomeViewKategori
 import com.example.projectakhir.ui.kategori.view.InsertViewKategori
@@ -68,12 +75,154 @@ fun PengelolaHalaman(
 
 
             //======================================   BUKU   ====================================//
+            // get buku
             composable(route = DestinasiHomeBuku.route) {
+                //HomeViewBuku(
                 HomeViewBuku(
                     navController = navController,
                     navigateToItemEntry = { navController.navigate(DestinasiEntryBuku.route) },
                 )
             }
+            // Insert buku
+            composable(route = DestinasiEntryBuku.route){
+                InsertViewBuku(navigateBack = {
+                    navController.navigate(DestinasiHomeBuku.route){
+                        popUpTo(DestinasiHomeBuku.route){
+                            inclusive = true
+                        }
+                    }
+                })
+            }
+            // DETAIL
+             //DETAIL BUKU
+            composable(route = DestinasiHomeBuku.route) {
+                HomeViewBuku(
+                    navController = navController,
+                    navigateToItemEntry = { navController.navigate(DestinasiEntryBuku.route) },
+                    onDetailClick = { idBuku ->
+                        navController.navigate("${DestinasiDetailBuku.route}/$idBuku")
+                    }
+                )
+            }
+            // Detail Buku
+            composable(
+                route = DestinasiDetailBuku.routeWithArgument,
+                arguments = listOf(
+                    navArgument(DestinasiDetailBuku.idBukuArg) {
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+                val idBuku = backStackEntry.arguments?.getInt(DestinasiDetailBuku.idBukuArg)
+                idBuku?.let { id ->
+                    DetailViewBuku(
+                        navigateBack = {
+                            navController.navigate(DestinasiHomeBuku.route) {
+                                popUpTo(DestinasiHomeBuku.route) {
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        navigateToEdit = {
+                            navController.navigate("${DestinasiUpdateBuku.route}/$idBuku")
+                        },
+                        navController = navController // Pastikan navController diteruskan
+                    )
+                }
+            }
+
+
+
+////            // DETAIL BUKU NEW
+//            composable(
+//                route = DestinasiDetailBuku.routeWithArgument,
+//                arguments = listOf(
+//                    navArgument(DestinasiDetailBuku.idBukuArg) {
+//                        type = NavType.IntType
+//                    }
+//                )
+//            ) { backStackEntry ->
+//                val idBuku = backStackEntry.arguments?.getInt(DestinasiDetailBuku.idBukuArg)
+//                println("DestinasiDetailProperti called with ID: $idBuku")
+//                idBuku?.let { id ->
+//                    DetailViewBuku(
+//                        navigateBack = {
+//                            navController.navigate(DestinasiHomeBuku.route) {
+//                                popUpTo(DestinasiHomeBuku.route) {
+//                                    inclusive = true
+//                                }
+//                            }
+//                        },
+//                        navigateToEdit = {
+//                            navController.navigate("${DestinasiUpdateBuku.route}/$idBuku")
+//                        },
+//
+//
+//                    )
+//                }
+//            }
+
+
+
+
+//            composable(
+//                route = DestinasiDetailBuku.routeWithArgument,
+//                arguments = listOf(
+//                    navArgument(DestinasiDetailBuku.idBukuArg) {
+//                        type = NavType.IntType
+//                    }
+//                )
+//            ) { backStackEntry ->
+//                val idBuku = backStackEntry.arguments?.getInt(DestinasiDetailBuku.idBukuArg)
+//                idBuku?.let { id ->
+//                    DetailViewBuku(
+//                        navigateBack = {
+//                            navController.navigate(DestinasiHomeBuku.route) {
+//                                popUpTo(DestinasiHomeBuku.route) {
+//                                    inclusive = true
+//                                }
+//                            }
+//                        },
+//                        navigateToEdit = {
+//                            navController.navigate("${DestinasiUpdateBuku.route}/$idBuku")
+//                        }
+//                    )
+//                }
+//            }
+
+
+//            // Detail Buku
+//            composable(
+//                route = DestinasiDetailBuku.routeWithArgument,
+//                arguments = listOf(
+//                    navArgument(DestinasiDetailBuku.idBukuArg) {
+//                        type = NavType.IntType
+//                    }
+//                )
+//            ) { backStackEntry ->
+//                val idBuku = backStackEntry.arguments?.getInt(DestinasiDetailBuku.idBukuArg)
+//                idBuku?.let { id ->
+//                    DetailViewBuku(
+//                        navigateBack = {
+//                            navController.navigate(DestinasiHomeBuku.route) {
+//                                popUpTo(DestinasiHomeBuku.route) {
+//                                    inclusive = true
+//                                }
+//                            }
+//                        },
+//                        navigateToEdit = {
+//                            navController.navigate("${DestinasiUpdateBuku.route}/$id")
+//                        },
+//                        navController = navController // Pastikan navController diteruskan
+//                    )
+//                }
+//            }
+
+
+
+
+
+
 
 
 
@@ -81,7 +230,7 @@ fun PengelolaHalaman(
             //====================================   KATEGORI   ==================================//
             // GET KATEGORI
             composable(route = DestinasiHomeKategori.route) {
-                //HomeViewBuku(
+
                 HomeViewKategori(
                     navController = navController,
                     navigateToItemEntry = { navController.navigate(DestinasiEntryKategori.route) },
@@ -107,6 +256,7 @@ fun PengelolaHalaman(
                     }
                 )
             }
+
             composable(
                 route = DestinasiDetailKategori.routeWithArgument,
                 arguments = listOf(
@@ -131,6 +281,7 @@ fun PengelolaHalaman(
                     )
                 }
             }
+
             // UPDATE KATEGORI
             composable(
                 DestinasiUpdateKategori.routeWithArgument,
@@ -155,12 +306,13 @@ fun PengelolaHalaman(
 
             //===================================   PENULIS   ====================================//
             composable(route = DestinasiHomePenulis.route) {
-                //HomeViewBuku(
+
                 HomeViewPenulis(
                     navController = navController,
                     navigateToItemEntry = { navController.navigate(DestinasiEntryPenulis.route) },
                 )
             }
+
          //Insert PENULIS
             composable(route = DestinasiEntryPenulis.route){
                InsertViewPenulis(navigateBack = {
@@ -172,7 +324,7 @@ fun PengelolaHalaman(
                 })
             }
 
-// DETAIL PENULIS
+            // DETAIL PENULIS
             composable(route = DestinasiHomePenulis.route) {
                 HomeViewPenulis(
                     navController = navController,
@@ -206,7 +358,8 @@ fun PengelolaHalaman(
                     )
                 }
             }
-//UPDATE PENULIS
+
+            //UPDATE PENULIS
            composable(
                 DestinasiUpdatePenulis.routeWithArgument,
                 arguments = listOf(navArgument(DestinasiUpdatePenulis.idPenulisArg) {
@@ -233,7 +386,7 @@ fun PengelolaHalaman(
             //===================================   PENERBIT   ====================================//
             // GET PENERBIT
             composable(route = DestinasiHomePenerbit.route) {
-                //HomeViewBuku(
+
                 HomeViewPenerbit(
                     navController = navController,
                     navigateToItemEntry = { navController.navigate(DestinasiEntryPenerbit.route) },
@@ -298,6 +451,7 @@ fun PengelolaHalaman(
                     )
                 }
             }
+
 
 
 
