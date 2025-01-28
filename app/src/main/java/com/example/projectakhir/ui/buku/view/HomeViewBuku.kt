@@ -57,9 +57,14 @@ fun HomeViewBuku(
             FloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
+                containerColor = colorResource(id = R.color.white) // Warna latar belakang FAB
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Buku")
+                Icon(
+                    imageVector = Icons.Default.Add, // Ikon tambah
+                    contentDescription = "Tambah Kategori",
+                    tint = Color.Black // Warna ikon putih
+                )
             }
         },
     ) { innerPadding ->
@@ -85,29 +90,40 @@ fun BukuTopBar(
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
+        modifier = Modifier, // Hapus Modifier.background di sini
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = colorResource(id = R.color.white) // Atur warna latar belakang di sini
+        ),
         title = {
             Box(
                 modifier = Modifier
-                    .background(color = colorResource(id = R.color.primary1))
-                    .fillMaxSize()
+                    .fillMaxWidth() // Gunakan fillMaxWidth agar title memenuhi lebar TopAppBar
                     .clip(MaterialTheme.shapes.medium),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "Daftar Buku",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = Color.White
+                    color = Color.Black
                 )
             }
         },
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.Black // Atur warna ikon back agar sesuai dengan tema
+                )
             }
         },
         actions = {
             IconButton(onClick = { viewModel.getBuku() }) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "Refresh",
+                    tint = Color.Black // Atur warna ikon refresh agar sesuai dengan tema
+                )
             }
         },
         scrollBehavior = scrollBehavior
@@ -185,8 +201,8 @@ fun BukuLayout(
     onBackClick: () -> Unit = {}
 ) {
     LazyColumn(
-        modifier = modifier.background(color = colorResource(id = R.color.primary1)),
-        contentPadding = PaddingValues(16.dp),
+        modifier = modifier.background(color = colorResource(id = R.color.white)),
+       contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(buku) { buku ->
@@ -196,7 +212,7 @@ fun BukuLayout(
                     .fillMaxWidth()
                     .clickable { onDetailClick(buku) },
                 onDeleteClick = { onDeleteClick(buku) },
-                onBackClick = onBackClick
+                //onBackClick = onBackClick
             )
         }
     }
@@ -207,13 +223,12 @@ fun BukuCard(
     buku: Buku,
     modifier: Modifier = Modifier,
     onDeleteClick: (Buku) -> Unit = {},
-    onBackClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
-        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.accent2))
+        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.black))
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -223,24 +238,25 @@ fun BukuCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = onBackClick) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                // Ganti ikon back dengan ikon buku
+                Icon(
+                    painter = painterResource(id = R.drawable.bukuputih), // Ganti dengan drawable buku yang sesuai
+                    contentDescription = "Buku",
+                    tint = Color.White
+                )
                 Spacer(Modifier.width(8.dp))
                 Text(
                     text = buku.namaBuku,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
                 )
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = { onDeleteClick(buku) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete Buku",
-                        tint = MaterialTheme.colorScheme.error
+                        tint = Color.White
+                        //tint = MaterialTheme.colorScheme.error
                     )
                 }
             }
@@ -249,19 +265,19 @@ fun BukuCard(
                 Text(
                     text = "Deskripsi: ${buku.deskripsiBuku}",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = Color.White,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = "Tanggal Terbit: ${buku.tanggalTerbit}",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color  = Color.White,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = "Status: ${buku.statusBuku}",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = Color.White,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
             }
