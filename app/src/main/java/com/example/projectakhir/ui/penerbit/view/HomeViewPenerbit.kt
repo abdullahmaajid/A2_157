@@ -2,6 +2,7 @@ package com.example.projectakhir.ui.penerbit.view
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,8 +13,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,8 +70,17 @@ fun PenerbitTopBar(
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
+        modifier = Modifier, // Hapus Modifier.background di sini
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = colorResource(id = R.color.white) // Atur warna latar belakang di sini
+        ),
         title = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth() // Gunakan fillMaxWidth agar title memenuhi lebar TopAppBar
+                    .clip(MaterialTheme.shapes.medium),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
                     text = "Daftar Penerbit",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -78,12 +90,20 @@ fun PenerbitTopBar(
         },
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.Black // Atur warna ikon back agar sesuai dengan tema
+                )
             }
         },
         actions = {
             IconButton(onClick = { viewModel.getPenerbit() }) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "Refresh",
+                    tint = Color.Black // Atur warna ikon refresh agar sesuai dengan tema
+                )
             }
         },
         scrollBehavior = scrollBehavior
@@ -95,9 +115,14 @@ fun PenerbitFab(onClick: () -> Unit) {
     FloatingActionButton(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
+        containerColor = colorResource(id = R.color.white) // Warna latar belakang FAB
     ) {
-        Icon(imageVector = Icons.Default.Add, contentDescription = "Add Penerbit")
+        Icon(
+            imageVector = Icons.Default.Add, // Ikon tambah
+            contentDescription = "Tambah Penerbit",
+            tint = Color.Black // Warna ikon hitam
+        )
     }
 }
 
@@ -142,7 +167,7 @@ fun PenerbitLayout(
     onDeleteClick: (Penerbit) -> Unit = {}
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.background(color = colorResource(id = R.color.white)),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -157,6 +182,7 @@ fun PenerbitLayout(
         }
     }
 }
+
 
 
 
@@ -197,18 +223,12 @@ fun PenerbitCard(
     penerbit: Penerbit,
     modifier: Modifier = Modifier,
     onDeleteClick: (Penerbit) -> Unit = {},
-    onEditClick: (Penerbit) -> Unit = {}
 ) {
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 12.dp,
-            pressedElevation = 16.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF5F5F5)
-        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.black))
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -218,43 +238,46 @@ fun PenerbitCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Ganti ikon buku dengan ikon penerbit
+                Icon(
+                    painter = painterResource(id = R.drawable.penerbitputih), // Ganti dengan drawable penerbit yang sesuai
+                    contentDescription = "Penerbit",
+                    tint = Color.White
+                )
+                Spacer(Modifier.width(8.dp))
                 Text(
                     text = penerbit.namaPenerbit,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
                 )
                 Spacer(Modifier.weight(1f))
-
                 IconButton(onClick = { onDeleteClick(penerbit) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete Penerbit",
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                }
-
-                IconButton(onClick = { onEditClick(penerbit) }) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Penerbit",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = Color.White
                     )
                 }
             }
-
             Divider()
-
             Column {
                 Text(
                     text = "ID Penerbit: ${penerbit.idPenerbit}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = "Alamat: ${penerbit.alamatPenerbit}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = "Telepon: ${penerbit.teleponPenerbit}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
             }
         }
