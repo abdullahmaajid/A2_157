@@ -1,13 +1,19 @@
 package com.example.projectakhir.ui.kategori.view
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,6 +29,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +42,7 @@ import com.example.projectakhir.ui.navigasi.CostumeTopAppBar
 import com.example.projectakhir.ui.navigasi.DestinasiNavigasi
 import com.example.projectakhir.ui.kategori.viewmodel.DetailViewModelKategori
 import com.example.projectakhir.ui.kategori.viewmodel.toKategori
+import com.example.projectakhir.R
 
 
 
@@ -55,7 +64,9 @@ fun DetailViewKategori(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+            //.background(colorResource(id = R.color.accent2)), // Set background color to primary1
         topBar = {
             CostumeTopAppBar(
                 title = DestinasiDetailKategori.titleRes,
@@ -68,11 +79,13 @@ fun DetailViewKategori(
             FloatingActionButton(
                 onClick = { navigateToEdit(viewModel.detailUiStateView.detailUiEventView.idKategori) },
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(18.dp)
+                modifier = Modifier.padding(18.dp),
+                containerColor = colorResource(id = R.color.black) // Set FAB color to accent2
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Kategori"
+                    contentDescription = "Edit Kategori",
+                    tint = Color.White // Set icon color to white
                 )
             }
         }
@@ -81,7 +94,7 @@ fun DetailViewKategori(
             detailUiStateKategori = viewModel.detailUiStateView,
             modifier = Modifier.padding(innerPadding),
             navigateBackToDetailBuku = navigateBackToDetailBuku,
-            navigateBackToHomeKategori = navigateBackToHomeKategori // Tambahkan parameter ini
+            navigateBackToHomeKategori = navigateBackToHomeKategori
         )
     }
 }
@@ -99,7 +112,7 @@ fun BodyDetailKategori(
                 modifier = modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = Color.White) // Set progress color to white
             }
         }
         detailUiStateKategori.isError -> {
@@ -109,7 +122,9 @@ fun BodyDetailKategori(
             ) {
                 Text(
                     text = detailUiStateKategori.errorMessage,
-                    color = Color.Red
+                    color = Color.Red,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
@@ -138,16 +153,32 @@ fun ItemDetailKategori(
     navigateBackToHomeKategori: () -> Unit
 ) {
     Card(
-        modifier = modifier.fillMaxWidth().padding(top = 20.dp),
+        modifier = modifier
+            //.background(color = colorResource(id = R.color.secondary))
+            .fillMaxWidth()
+            .padding(top = 20.dp),
+        shape = RoundedCornerShape(16.dp), // Rounded corners
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp), // Add shadow
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = colorResource(id = R.color.black), // Set card color to accent2
+            //contentColor = Color.Black
         )
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
         ) {
+            // Add an icon from drawable
+            Image(
+                painter = painterResource(id = R.drawable.kategoriputih), // Icon from drawable
+                contentDescription = "Kategori Icon",
+                modifier = Modifier
+                    .size(48.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.padding(8.dp))
+
             ComponentDetailKategori(judul = "ID Kategori", isinya = kategori.idKategori.toString())
             Spacer(modifier = Modifier.padding(4.dp))
             ComponentDetailKategori(judul = "Nama Kategori", isinya = kategori.namaKategori)
@@ -159,7 +190,11 @@ fun ItemDetailKategori(
                 onClick = navigateBackToDetailBuku,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(top = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.white), // Set button color to accent2
+                    contentColor = Color.Black // Set text color to white
+                )
             ) {
                 Text(text = "Kembali ke Detail Buku")
             }
@@ -169,7 +204,11 @@ fun ItemDetailKategori(
                 onClick = navigateBackToHomeKategori,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp)
+                    .padding(top = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.white), // Set button color to accent2
+                    contentColor = Color.Black // Set text color to white
+                )
             ) {
                 Text(text = "Kembali ke Home Kategori")
             }
@@ -189,14 +228,15 @@ fun ComponentDetailKategori(
     ) {
         Text(
             text = "$judul : ",
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Gray
+            color = Color.White
         )
         Text(
             text = isinya,
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = Color.White
         )
     }
 }
