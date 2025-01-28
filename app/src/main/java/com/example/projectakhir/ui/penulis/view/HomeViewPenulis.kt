@@ -2,6 +2,7 @@ package com.example.projectakhir.ui.penulis.view
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,8 +69,15 @@ fun PenulisTopBar(
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
+        modifier = Modifier,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = colorResource(id = R.color.white)
+        ),
         title = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
                     text = "Daftar Penulis",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -78,12 +87,20 @@ fun PenulisTopBar(
         },
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.Black
+                )
             }
         },
         actions = {
             IconButton(onClick = { viewModel.getPenulis() }) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "Refresh",
+                    tint = Color.Black
+                )
             }
         },
         scrollBehavior = scrollBehavior
@@ -95,9 +112,14 @@ fun PenulisFab(onClick: () -> Unit) {
     FloatingActionButton(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
+        containerColor = colorResource(id = R.color.white)
     ) {
-        Icon(imageVector = Icons.Default.Add, contentDescription = "Add Penulis")
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "Add Penulis",
+            tint = Color.Black
+        )
     }
 }
 
@@ -127,6 +149,8 @@ fun PenulisStatus(
     }
 }
 
+
+
 @Composable
 fun EmptyPenulisView(modifier: Modifier) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -142,7 +166,7 @@ fun PenulisLayout(
     onDeleteClick: (Penulis) -> Unit = {}
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.background(color = colorResource(id = R.color.white)),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -158,6 +182,82 @@ fun PenulisLayout(
     }
 }
 
+
+
+
+
+@Composable
+fun PenulisCard(
+    penulis: Penulis,
+    modifier: Modifier = Modifier,
+    onDeleteClick: (Penulis) -> Unit = {},
+    onEditClick: (Penulis) -> Unit = {}
+) {
+    Card(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.large,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 12.dp,
+            pressedElevation = 16.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.black)
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = penulis.namaPenulis,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
+                Spacer(Modifier.weight(1f))
+
+                IconButton(onClick = { onDeleteClick(penulis) }) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete Penulis",
+                        tint = Color.White
+                    )
+                }
+
+                IconButton(onClick = { onEditClick(penulis) }) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Edit Penulis",
+                        tint = Color.White
+                    )
+                }
+            }
+
+            Divider()
+
+            Column {
+                Text(
+                    text = "ID Penulis: ${penulis.idPenulis}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White
+                )
+                Text(
+                    text = "Biografi: ${penulis.biografi}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White
+                )
+                Text(
+                    text = "Kontak: ${penulis.kontak}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White
+                )
+            }
+        }
+    }
+}
 
 @Composable
 fun OnLoading(modifier: Modifier = Modifier) {
@@ -186,76 +286,6 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier) {
             )
             Button(onClick = retryAction, modifier = Modifier.padding(top = 16.dp)) {
                 Text(stringResource(R.string.retry))
-            }
-        }
-    }
-}
-
-
-@Composable
-fun PenulisCard(
-    penulis: Penulis,
-    modifier: Modifier = Modifier,
-    onDeleteClick: (Penulis) -> Unit = {},
-    onEditClick: (Penulis) -> Unit = {}
-) {
-    Card(
-        modifier = modifier,
-        shape = MaterialTheme.shapes.large,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 12.dp,
-            pressedElevation = 16.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF5F5F5)
-        ),
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = penulis.namaPenulis,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Spacer(Modifier.weight(1f))
-
-                IconButton(onClick = { onDeleteClick(penulis) }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete Penulis",
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                }
-
-                IconButton(onClick = { onEditClick(penulis) }) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Penulis",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-
-            Divider()
-
-            Column {
-                Text(
-                    text = "ID Penulis: ${penulis.idPenulis}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "Biografi: ${penulis.biografi}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "Kontak: ${penulis.kontak}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
             }
         }
     }
