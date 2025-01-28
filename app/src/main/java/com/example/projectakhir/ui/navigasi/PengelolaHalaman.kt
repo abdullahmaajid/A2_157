@@ -367,14 +367,17 @@ fun PengelolaHalaman(
                 val idPenulis = backStackEntry.arguments?.getInt(DestinasiDetailPenulis.idPenulisArg)
                 idPenulis?.let { id ->
                     DetailViewPenulis(
-                        navigateBack = {
+                        navigateBackToHomePenulis = {
                             navController.navigate(DestinasiHomePenulis.route) {
                                 popUpTo(DestinasiHomePenulis.route) {
                                     inclusive = true
                                 }
                             }
                         },
-                        navigateToEdit = {
+                        navigateBackToDetailBuku = {
+                            navController.popBackStack() // Kembali ke layar sebelumnya (Detail Buku)
+                        },
+                        navigateToEdit = { idPenulis ->
                             navController.navigate("${DestinasiUpdatePenulis.route}/$idPenulis")
                         }
                     )
@@ -414,7 +417,7 @@ fun PengelolaHalaman(
                     navigateToItemEntry = { navController.navigate(DestinasiEntryPenerbit.route) },
                 )
             }
-// Insert PENERBIT
+            // Insert PENERBIT
             composable(route = DestinasiEntryPenerbit.route){
                 InsertViewPenerbit(navigateBack = {
                     navController.navigate(DestinasiHomePenerbit.route){
@@ -424,7 +427,7 @@ fun PengelolaHalaman(
                     }
                 })
             }
-// DETAIL PENERBIT
+            // DETAIL PENERBIT
             composable(route = DestinasiHomePenerbit.route) {
                 HomeViewPenerbit(
                     navController = navController,
@@ -445,20 +448,23 @@ fun PengelolaHalaman(
                 val idPenerbit = backStackEntry.arguments?.getInt(DestinasiDetailPenerbit.idPenerbitArg)
                 idPenerbit?.let { id ->
                     DetailViewPenerbit(
-                        navigateBack = {
+                        navigateBackToHomePenerbit = {
                             navController.navigate(DestinasiHomePenerbit.route) {
                                 popUpTo(DestinasiHomePenerbit.route) {
                                     inclusive = true
                                 }
                             }
                         },
-                        navigateToEdit = {
+                        navigateBackToDetailBuku = {
+                            navController.popBackStack() // Kembali ke layar sebelumnya (Detail Buku)
+                        },
+                        navigateToEdit = { idPenerbit ->
                             navController.navigate("${DestinasiUpdatePenerbit.route}/$idPenerbit")
                         }
                     )
                 }
             }
-// UPDATE PENERBIT
+            // UPDATE PENERBIT
             composable(
                 DestinasiUpdatePenerbit.routeWithArgument,
                 arguments = listOf(navArgument(DestinasiUpdatePenerbit.idPenerbitArg) {
