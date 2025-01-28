@@ -71,30 +71,40 @@ fun KategoriTopBar(
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     TopAppBar(
+        modifier = Modifier, // Hapus Modifier.background di sini
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = colorResource(id = R.color.white) // Atur warna latar belakang di sini
+        ),
         title = {
             Box(
                 modifier = Modifier
-                    .background(color = colorResource(id = R.color.primary1)) // Set background color to primary1
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)) // Rounded corners on top-left and top-right
-                ,
+                    .fillMaxWidth() // Gunakan fillMaxWidth agar title memenuhi lebar TopAppBar
+                    .clip(MaterialTheme.shapes.medium),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "Daftar Kategori",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = Color.White // Set the text color to white
+                    color = Color.Black
                 )
             }
         },
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.Black // Atur warna ikon back agar sesuai dengan tema
+                )
             }
         },
         actions = {
             IconButton(onClick = { viewModel.getKategori() }) {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "Refresh",
+                    tint = Color.Black // Atur warna ikon refresh agar sesuai dengan tema
+                )
             }
         },
         scrollBehavior = scrollBehavior
@@ -106,9 +116,14 @@ fun KategoriFab(onClick: () -> Unit) {
     FloatingActionButton(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
+        containerColor = colorResource(id = R.color.white) // Warna latar belakang FAB
     ) {
-        Icon(imageVector = Icons.Default.Add, contentDescription = "Add Kategori")
+        Icon(
+            imageVector = Icons.Default.Add, // Ikon tambah
+            contentDescription = "Tambah Kategori",
+            tint = Color.Black // Warna ikon putih
+        )
     }
 }
 
@@ -185,10 +200,9 @@ fun KategoriLayout(
     onDeleteClick: (Kategori) -> Unit = {}
 ) {
     LazyColumn(
-        modifier = modifier.background(color = colorResource(id = R.color.primary1)),
+        modifier = modifier.background(color = colorResource(id = R.color.white)),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
-
     ) {
         items(kategori) { kategori ->
             KategoriCard(
@@ -205,20 +219,15 @@ fun KategoriLayout(
 @Composable
 fun KategoriCard(
     kategori: Kategori,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
+        .fillMaxWidth(),
     onDeleteClick: (Kategori) -> Unit = {},
-    onEditClick: (Kategori) -> Unit = {}
 ) {
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 12.dp,
-            pressedElevation = 16.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.accent2)
-        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.black))
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -228,39 +237,40 @@ fun KategoriCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Ganti ikon buku dengan ikon kategori
+                Icon(
+                    painter = painterResource(id = R.drawable.kategoriputih), // Ganti dengan drawable kategori yang sesuai
+                    contentDescription = "Kategori",
+                    tint = Color.White
+                )
+                Spacer(Modifier.width(8.dp))
                 Text(
                     text = kategori.namaKategori,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
                 )
                 Spacer(Modifier.weight(1f))
-
                 IconButton(onClick = { onDeleteClick(kategori) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete Kategori",
-                        tint = MaterialTheme.colorScheme.error
+                        tint = Color.White
                     )
                 }
-
-//                IconButton(onClick = { onEditClick(kategori) }) {
-//                    Icon(
-//                        imageVector = Icons.Default.Edit,
-//                        contentDescription = "Edit Kategori",
-//                        tint = MaterialTheme.colorScheme.primary
-//                    )
-//                }
             }
-
             Divider()
-
             Column {
                 Text(
                     text = "ID Kategori: ${kategori.idKategori}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = "Deskripsi: ${kategori.deskripsiKategori}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
             }
         }
