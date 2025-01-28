@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -46,8 +47,9 @@ object DestinasiDetailKategori : DestinasiNavigasi {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailViewKategori(
-    navigateBack: () -> Unit,
-    navigateToEdit: () -> Unit,
+    navigateBackToHomeKategori: () -> Unit,
+    navigateBackToDetailBuku: () -> Unit,
+    navigateToEdit: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailViewModelKategori = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -59,12 +61,12 @@ fun DetailViewKategori(
                 title = DestinasiDetailKategori.titleRes,
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
-                navigateUp = navigateBack
+                navigateUp = navigateBackToHomeKategori // Default back to home
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = navigateToEdit,
+                onClick = { navigateToEdit(viewModel.detailUiStateView.detailUiEventView.idKategori) },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
@@ -77,7 +79,9 @@ fun DetailViewKategori(
     ) { innerPadding ->
         BodyDetailKategori(
             detailUiStateKategori = viewModel.detailUiStateView,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            navigateBackToDetailBuku = navigateBackToDetailBuku,
+            navigateBackToHomeKategori = navigateBackToHomeKategori // Tambahkan parameter ini
         )
     }
 }
@@ -85,7 +89,9 @@ fun DetailViewKategori(
 @Composable
 fun BodyDetailKategori(
     detailUiStateKategori: DetailUiStateKategori,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateBackToDetailBuku: () -> Unit,
+    navigateBackToHomeKategori: () -> Unit
 ) {
     when {
         detailUiStateKategori.isLoading -> {
@@ -115,7 +121,9 @@ fun BodyDetailKategori(
             ) {
                 ItemDetailKategori(
                     kategori = detailUiStateKategori.detailUiEventView.toKategori(),
-                    modifier = modifier
+                    modifier = modifier,
+                    navigateBackToDetailBuku = navigateBackToDetailBuku,
+                    navigateBackToHomeKategori = navigateBackToHomeKategori
                 )
             }
         }
@@ -125,7 +133,9 @@ fun BodyDetailKategori(
 @Composable
 fun ItemDetailKategori(
     modifier: Modifier = Modifier,
-    kategori: Kategori
+    kategori: Kategori,
+    navigateBackToDetailBuku: () -> Unit,
+    navigateBackToHomeKategori: () -> Unit
 ) {
     Card(
         modifier = modifier.fillMaxWidth().padding(top = 20.dp),
@@ -143,6 +153,26 @@ fun ItemDetailKategori(
             ComponentDetailKategori(judul = "Nama Kategori", isinya = kategori.namaKategori)
             Spacer(modifier = Modifier.padding(4.dp))
             ComponentDetailKategori(judul = "Deskripsi", isinya = kategori.deskripsiKategori)
+
+            // Tombol untuk kembali ke Detail Buku
+            Button(
+                onClick = navigateBackToDetailBuku,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Text(text = "Kembali ke Detail Buku")
+            }
+
+            // Tombol untuk kembali ke Home Kategori
+            Button(
+                onClick = navigateBackToHomeKategori,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            ) {
+                Text(text = "Kembali ke Home Kategori")
+            }
         }
     }
 }
