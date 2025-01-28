@@ -149,15 +149,16 @@ fun ItemDetailBuku(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 20.dp),
+            .padding(top = 90.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = Color.Black, // Warna latar belakang Card hitam
+            contentColor = Color.White // Warna teks putih
         )
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
+
         ) {
             ComponentDetailBuku(judul = "ID Buku", isinya = buku.idBuku.toString())
             Spacer(modifier = Modifier.padding(4.dp))
@@ -174,26 +175,81 @@ fun ItemDetailBuku(
             ComponentDetailBuku(judul = "Status", isinya = buku.statusBuku)
             Spacer(modifier = Modifier.padding(4.dp))
 
-            // Navigating to Category, Author, Publisher using NavController
-            ComponentDetailBuku(
-                judul = "Kategori",
-                isinya = kategori.namaKategori,
-                onClick = { navController.navigate("${DestinasiDetailKategori.route}/${kategori.idKategori}") }
-            )
-            Spacer(modifier = Modifier.padding(4.dp))
+            // Memisahkan bagian Kategori, Penulis, dan Penerbit dengan Box
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                Column {
+                    // Kategori
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { navController.navigate("${DestinasiDetailKategori.route}/${kategori.idKategori}") }
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Kategori: ",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = kategori.namaKategori,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
 
-            ComponentDetailBuku(
-                judul = "Penulis",
-                isinya = penulis.namaPenulis,
-                onClick = { navController.navigate("${DestinasiDetailPenulis.route}/${penulis.idPenulis}") }
-            )
-            Spacer(modifier = Modifier.padding(4.dp))
+                    // Penulis
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { navController.navigate("${DestinasiDetailPenulis.route}/${penulis.idPenulis}") }
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Penulis: ",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = penulis.namaPenulis,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
 
-            ComponentDetailBuku(
-                judul = "Penerbit",
-                isinya = penerbit.namaPenerbit,
-                onClick = { navController.navigate("${DestinasiDetailPenerbit.route}/${penerbit.idPenerbit}") }
-            )
+                    // Penerbit
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { navController.navigate("${DestinasiDetailPenerbit.route}/${penerbit.idPenerbit}") }
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Penerbit: ",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = penerbit.namaPenerbit,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+
+                    }
+                }
+            }
         }
     }
 }
@@ -207,7 +263,6 @@ fun ComponentDetailBuku(
     isinya: String,
     onClick: (() -> Unit)? = null // Optional onClick parameter
 ) {
-    println("ComponentDetailBuku: Displaying $judul - $isinya")
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -218,13 +273,13 @@ fun ComponentDetailBuku(
             text = "$judul : ",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
+            color = Color.White // Warna teks putih
         )
         Text(
             text = isinya,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = if (onClick != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+            color = if (onClick != null) Color.White else Color.White // Warna teks putih
         )
     }
 }
