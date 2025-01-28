@@ -41,8 +41,8 @@ fun HomeApp(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
-            .padding(top = 35.dp),
+            .background(color = Color.White),
+            //.padding(top = 35.dp)
         verticalArrangement = Arrangement.Top
     // Membuat latar belakang hitam untuk seluruh layar
     ) {
@@ -73,10 +73,10 @@ fun HeaderSection() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.umy),
+                painter = painterResource(id = R.drawable.umyputih),
                 contentDescription = "UMY Logo Left",
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(25.dp)
                     .size(90.dp)
                     .clip(CircleShape)
             )
