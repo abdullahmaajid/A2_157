@@ -28,7 +28,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProjectakhirTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PengelolaHalaman(modifier = Modifier.padding(innerPadding))
+                    PengelolaHalaman(
+                        modifier = Modifier.padding(innerPadding))
                 }
             }
         }
