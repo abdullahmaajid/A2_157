@@ -3,6 +3,7 @@ package com.example.projectakhir.ui.buku.view
 
 import android.util.Property
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,8 +18,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,33 +44,14 @@ fun HomeViewBuku(
     modifier: Modifier = Modifier,
     onDetailClick: (String) -> Unit = {},
     navController: NavController,
-    onBackClick: () -> Unit = {}, // Tambahkan parameter ini
+    onBackClick: () -> Unit = {},
     viewModel: HomeViewModelBuku = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        Text(
-                            text = "Daftar Buku",
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                    IconButton(onClick = { viewModel.getBuku() }) {
-                        Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
-                    }
-                },
-                scrollBehavior = scrollBehavior
-            )
+            BukuTopBar(navController = navController, viewModel = viewModel, scrollBehavior = scrollBehavior)
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -88,9 +72,46 @@ fun HomeViewBuku(
                 viewModel.deleteBuku(it.idBuku)
                 viewModel.getBuku()
             },
-            onBackClick = onBackClick // Teruskan ke BukuStatus
+            onBackClick = onBackClick
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BukuTopBar(
+    navController: NavController,
+    viewModel: HomeViewModelBuku,
+    scrollBehavior: TopAppBarScrollBehavior
+) {
+    TopAppBar(
+        title = {
+            Box(
+                modifier = Modifier
+                    .background(color = colorResource(id = R.color.primary1))
+                    .fillMaxSize()
+                    .clip(MaterialTheme.shapes.medium),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Daftar Buku",
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = Color.White
+                )
+            }
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+        },
+        actions = {
+            IconButton(onClick = { viewModel.getBuku() }) {
+                Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
+            }
+        },
+        scrollBehavior = scrollBehavior
+    )
 }
 
 @Composable
@@ -100,29 +121,30 @@ fun BukuStatus(
     modifier: Modifier = Modifier,
     onDeleteClick: (Buku) -> Unit = {},
     onDetailClick: (String) -> Unit,
-    onBackClick: () -> Unit = {} // Tambahkan parameter ini
+    onBackClick: () -> Unit = {}
 ) {
     when (homeUiState) {
         is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
         is HomeUiState.Success ->
             if (homeUiState.buku.isEmpty()) {
-                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "Tidak ada data", style = MaterialTheme.typography.bodyMedium)
-                }
+                EmptyBukuView(modifier = modifier)
             } else {
                 BukuLayout(
                     buku = homeUiState.buku,
                     modifier = modifier.fillMaxWidth(),
-                    onDetailClick = {
-                        onDetailClick(it.idBuku.toString())
-                    },
-                    onDeleteClick = { buku ->
-                        onDeleteClick(buku)
-                    },
-                    onBackClick = onBackClick // Teruskan ke BukuLayout
+                    onDetailClick = { onDetailClick(it.idBuku.toString()) },
+                    onDeleteClick = { onDeleteClick(it) },
+                    onBackClick = onBackClick
                 )
             }
         is HomeUiState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
+    }
+}
+
+@Composable
+fun EmptyBukuView(modifier: Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = "Tidak ada data buku", style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -160,10 +182,10 @@ fun BukuLayout(
     modifier: Modifier = Modifier,
     onDetailClick: (Buku) -> Unit,
     onDeleteClick: (Buku) -> Unit = {},
-    onBackClick: () -> Unit = {} // Tambahkan parameter ini
+    onBackClick: () -> Unit = {}
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.background(color = colorResource(id = R.color.primary1)),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -174,7 +196,7 @@ fun BukuLayout(
                     .fillMaxWidth()
                     .clickable { onDetailClick(buku) },
                 onDeleteClick = { onDeleteClick(buku) },
-                onBackClick = onBackClick // Teruskan ke BukuCard
+                onBackClick = onBackClick
             )
         }
     }
@@ -185,14 +207,13 @@ fun BukuCard(
     buku: Buku,
     modifier: Modifier = Modifier,
     onDeleteClick: (Buku) -> Unit = {},
-    onEditClick: (Buku) -> Unit = {},
-    onBackClick: () -> Unit = {} // Tambahkan parameter ini
+    onBackClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier,
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        shape = MaterialTheme.shapes.large,
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.accent2))
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -202,7 +223,6 @@ fun BukuCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Tombol Back
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -210,16 +230,12 @@ fun BukuCard(
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
-
-                Spacer(Modifier.width(8.dp)) // Jarak antara tombol Back dan judul
-
+                Spacer(Modifier.width(8.dp))
                 Text(
                     text = buku.namaBuku,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.weight(1f))
-
-                // Delete Button
                 IconButton(onClick = { onDeleteClick(buku) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
