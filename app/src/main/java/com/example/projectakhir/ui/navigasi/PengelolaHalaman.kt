@@ -287,14 +287,17 @@ fun PengelolaHalaman(
                 val idKategori = backStackEntry.arguments?.getInt(DestinasiDetailKategori.idKategoriArg)
                 idKategori?.let { id ->
                     DetailViewKategori(
-                        navigateBack = {
+                        navigateBackToHomeKategori = {
                             navController.navigate(DestinasiHomeKategori.route) {
                                 popUpTo(DestinasiHomeKategori.route) {
                                     inclusive = true
                                 }
                             }
                         },
-                        navigateToEdit = {
+                        navigateBackToDetailBuku = {
+                            navController.popBackStack() // Kembali ke layar sebelumnya (Detail Buku)
+                        },
+                        navigateToEdit = { idKategori ->
                             navController.navigate("${DestinasiUpdateKategori.route}/$idKategori")
                         }
                     )
