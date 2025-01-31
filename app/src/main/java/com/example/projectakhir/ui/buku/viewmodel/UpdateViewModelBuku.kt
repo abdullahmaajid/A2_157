@@ -33,10 +33,10 @@ class UpdateViewModelBuku(
     var penulisList by mutableStateOf<List<Penulis>>(emptyList())
     var penerbitList by mutableStateOf<List<Penerbit>>(emptyList())
 
-    // Ambil idProperti dari SavedStateHandle
+    // Ambil id dari SavedStateHandle
     private val idBuku: Int = checkNotNull(savedStateHandle[DestinasiUpdateBuku.idBukuArg])
 
-    // Fungsi untuk mengambil data dropdown dan data properti
+    // Fungsi untuk mengambil data dropdown dan data
     fun fetchData() {
         viewModelScope.launch {
             try {
@@ -70,7 +70,7 @@ class UpdateViewModelBuku(
         uiState = uiState.copy(bukuUiEvent = event)
     }
 
-    // Fungsi untuk update properti
+    // Fungsi untuk update
     fun updateBuku() {
         viewModelScope.launch {
             try {

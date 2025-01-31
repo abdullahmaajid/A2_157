@@ -73,7 +73,7 @@ fun UpdateViewBuku(
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Update Properti"
+                    contentDescription = "Update Buku"
                 )
             }
         }

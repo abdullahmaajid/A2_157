@@ -19,24 +19,6 @@ object DestinasiHomeBuku : DestinasiNavigasi {
 }
 
 
-//object DestinasiEntryBuku : DestinasiNavigasi {
-//    override val route = "entryBuku"
-//    override val titleRes = "Entry Buku"
-//}
-//object DestinasiDetailBuku : DestinasiNavigasi {
-//    override val route = "detailBuku"
-//    override val titleRes = "Detail Buku"
-//    const val idBukuArg = "idBuku"
-//    val routeWithArgument = "$route/{$idBukuArg}"
-//}
-//object DestinasiUpdateBuku : DestinasiNavigasi {
-//    override val route = "updateBuku"
-//    override val titleRes = "Update Properti"
-//    const val idBukuArg = "idBuku"
-//    val routeWithArgument = "$route/{$idBukuArg}"
-//}
-
-
 
 object DestinasiEntryBuku : DestinasiNavigasi {
     override val route = "entryBuku"

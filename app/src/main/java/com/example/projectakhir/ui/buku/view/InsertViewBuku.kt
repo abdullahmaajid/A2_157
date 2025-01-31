@@ -142,14 +142,8 @@ fun FormInputBuku(
             label = { Text("Tanggal Terbit") },
             modifier = Modifier.fillMaxWidth()
         )
-//        OutlinedTextField(
-//            value = bukuUiEvent.statusBuku,
-//            onValueChange = { onValueChange(bukuUiEvent.copy(harga = it)) },
-//            label = { Text("Harga Properti") },
-//            modifier = Modifier.fillMaxWidth()
-//        )
 
-        // Dropdown untuk status properti
+        // Dropdown untuk
         DropdownMenu(
             items = StatusBuku.values().toList(),
             selectedItem = bukuUiEvent.statusBuku,
@@ -158,7 +152,7 @@ fun FormInputBuku(
             itemToString = { it.toString() }
         )
 
-        // Dropdown untuk jenis properti
+        // Dropdown
         DropdownMenu(
             items = kategoriList,
             selectedItem = kategoriList.find { it.idKategori == bukuUiEvent.idKategori },

@@ -154,24 +154,6 @@ import com.example.projectakhir.ui.penulis.viewmodel.UpdateViewModelPenulis
                      )
                  }
          }
-//        initializer {
-//            DetailViewModelPenerbit(
-//                createSavedStateHandle(),
-//                PerpustakaanApplication().container.penerbitRepository
-//            )
-//        }
-//        initializer {
-//            UpdateViewModelPenerbit(
-//                createSavedStateHandle(),
-//                PerpustakaanApplication().container.penerbitRepository
-//            )
-//        }
-//        initializer {
-//            DeleteViewModelPenerbit(
-//                createSavedStateHandle(),
-//                PerpustakaanApplication().container.penerbitRepository
-//            )
-//        }
     }
 
 

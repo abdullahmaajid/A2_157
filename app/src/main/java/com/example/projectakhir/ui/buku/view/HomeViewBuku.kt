@@ -1,7 +1,6 @@
 package com.example.projectakhir.ui.buku.view
 
 
-import android.util.Property
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
